@@ -42,9 +42,9 @@ android {
 
 dependencies {
 
-    val roomVersion = "2.6.1"
-    val navVersion = "2.8.2"
-    val composeVersion = "1.8.0-alpha03"
+    val navVersion = "2.7.5"
+    val composeVersion = "1.6.0-alpha08"
+    val roomVersion = "2.6.0"
 
 
     implementation("androidx.room:room-runtime:$roomVersion")
