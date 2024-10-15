@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -32,7 +35,7 @@ import androidx.navigation.NavController
 @Composable
 fun AddEditDetailView(id: Long = 0L, viewModel: WishViewModel, navController: NavController) {
 
-    Scaffold(topBar = {AppBarView(title = if (id != 0L) "Update Wish" else "Add Wish", onBackClicked = {})}) {
+    Scaffold(topBar = {AppBarView(title = if (id != 0L) "Update Wish" else "Add Wish", onBackClicked = {navController.navigateUp()})}) {
         Column(modifier = Modifier
             .padding(it)
             .wrapContentSize(),
