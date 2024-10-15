@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WishNotesKotlinTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    HomeView()
+                    Navigation()
                 }
             }
         }
