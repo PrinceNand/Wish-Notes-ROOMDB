@@ -1,4 +1,4 @@
-package com.project.wishnotes
+package com.example.wishnoteskotlin
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
