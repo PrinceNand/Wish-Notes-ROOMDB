@@ -15,9 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun HomeView(){
+fun HomeView(viewModel: WishViewModel, navController: NavController){
     val context = LocalContext.current
     Scaffold(topBar = { AppBarView(title = "Wish Item", onBackClicked = {
         Toast.makeText(context, "Button Clicked", Toast.LENGTH_LONG).show()
@@ -31,6 +32,7 @@ fun HomeView(){
                 onClick = {
                     Toast.makeText(context, "FAButton Clicked", Toast.LENGTH_LONG).show()
                     // TODO Add Navigation to add screen
+                    navController.navigate(Screen.AddScreen.route)
                 }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
