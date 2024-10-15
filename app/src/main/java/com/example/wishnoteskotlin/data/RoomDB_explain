@@ -1,0 +1,115 @@
+Room Database Components - Detailed Notes
+
+
+------------------------------------------- Full Flow ----------------------------------------------
+1.ViewModel requests data from the Repository.
+2.Repository acts as a mediator, deciding whether to fetch data from the local Room database (via DAO) or a remote API.
+3.If fetching from the Room database, the Repository calls the DAO to perform specific operations like querying, inserting, or deleting data.
+4.DAO executes database operations directly on the Room database, using annotated methods like @Query, @Insert, and @Delete.
+5.Database class provides the DAO, initializing the Room database and serving as the entry point for data operations.
+6.Entities define the structure of the data, representing the tables in the Room database.
+7.The ViewModel retrieves the data from the Repository and delivers it to the UI, efficiently managing lifecycle changes (e.g., screen rotations).
+----------------------------------------------------------------------------------------------------
+
+Entity (User):
+    Represents a table in the database.
+    Each field in the data class corresponds to a column in the table.
+    Annotated with @Entity, and you can define table-specific properties like tableName, primary keys, indices, etc.
+    Example:
+    kotlin
+    Copy code
+    @Entity(tableName = "user_table")
+    data class User(
+        @PrimaryKey(autoGenerate = true) val id: Int,
+        val name: String,
+        val age: Int
+    )
+
+
+DAO (Data Access Object) (UserDao):
+    Defines methods for database operations like insert, update, delete, and querying data.
+    Uses annotations like @Insert, @Update, @Delete, and @Query.
+    Room auto-generates the implementation of DAO methods at compile time.
+    Example:
+    kotlin
+    Copy code
+    @Dao
+    interface UserDao {
+        @Insert
+        suspend fun insert(user: User)
+
+        @Query("SELECT * FROM user_table WHERE id = :userId")
+        suspend fun getUserById(userId: Int): User?
+
+        @Delete
+        suspend fun deleteUser(user: User)
+    }
+
+Database (AppDatabase):
+    Holds the database instance and serves as the app's main entry point to the Room database.
+    Annotated with @Database, where you specify the entities and version of the database.
+    Provides DAOs through abstract methods.
+    Uses Room.databaseBuilder() to create and manage the database.
+    Example:
+    kotlin
+    Copy code
+    @Database(entities = [User::class], version = 1)
+    abstract class AppDatabase : RoomDatabase() {
+        abstract fun userDao(): UserDao
+
+        companion object {
+            @Volatile
+            private var INSTANCE: AppDatabase? = null
+
+            fun getDatabase(context: Context): AppDatabase {
+                return INSTANCE ?: synchronized(this) {
+                    val instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        "app_database"
+                    ).build()
+                    INSTANCE = instance
+                    instance
+                }
+            }
+        }
+    }
+
+Repository (UserRepository):
+    Acts as an abstraction layer between the ViewModel and the DAO, managing data operations and encapsulating complex logic.
+    Responsible for deciding whether to fetch data from the network or the local database.
+    Provides methods for data manipulation that internally call the DAO methods.
+    Example:
+    kotlin
+    Copy code
+    class UserRepository(private val userDao: UserDao) {
+        suspend fun insertUser(user: User) {
+            userDao.insert(user)
+        }
+
+        suspend fun getUserById(id: Int): User? {
+            return userDao.getUserById(id)
+        }
+
+        suspend fun deleteUser(user: User) {
+            userDao.deleteUser(user)
+        }
+    }
+
+ViewModel:
+    The ViewModel is responsible for preparing and managing the data for an Activity or Fragment.
+    It communicates with the Repository to fetch or update data.
+    The ViewModel is lifecycle-aware and survives configuration changes like screen rotations, ensuring data persistence.
+    Example:
+    kotlin
+    Copy code
+    class UserViewModel(private val repository: UserRepository) : ViewModel() {
+        fun getUser(userId: Int): LiveData<User?> = liveData {
+            val user = repository.getUserById(userId)
+            emit(user)
+        }
+
+        fun insertUser(user: User) = viewModelScope.launch {
+            repository.insertUser(user)
+        }
+    }
