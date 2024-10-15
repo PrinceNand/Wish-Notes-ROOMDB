@@ -21,12 +21,17 @@ fun AppBarView(
 ) {
 
     val navigation : (@Composable () -> Unit)? = {
-        IconButton(onClick = { onBackClicked() }) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                tint = Color.White,
-                contentDescription = null)
+        if (!title.contains("Wish Item")){
+            IconButton(onClick = { onBackClicked() }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    tint = Color.White,
+                    contentDescription = null)
+            }
+        } else {
+            null
         }
+
     }
 
     TopAppBar(
