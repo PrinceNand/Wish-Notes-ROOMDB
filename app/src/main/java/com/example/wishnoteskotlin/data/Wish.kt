@@ -1,4 +1,4 @@
-package com.example.wishnoteskotlin
+package com.example.wishnoteskotlin.data
 
 data class Wish(
     val id: Long =0L,

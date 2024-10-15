@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.wishnoteskotlin.data.DummyWish
 
 @Composable
 fun HomeView(viewModel: WishViewModel, navController: NavController){
