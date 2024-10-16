@@ -28,7 +28,7 @@ fun WishItem(wish: Wish, onClick: () -> Unit) {
     ) {
         Column(Modifier.padding(16.dp)) {
           Text(text = wish.title, fontWeight = FontWeight.ExtraBold)
-            Text(wish.title, fontWeight = FontWeight.ExtraBold)
+            Text(wish.description, fontWeight = FontWeight.ExtraBold)
         }
     }
 }
