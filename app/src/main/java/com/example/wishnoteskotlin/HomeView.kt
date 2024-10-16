@@ -76,7 +76,7 @@ fun HomeView(viewModel: WishViewModel, navController: NavController) {
                 SwipeToDismiss(state = dismissState,
                     background = {
                         val color by animateColorAsState(
-                            if (dismissState.dismissDirection == DismissDirection.EndToStart || dismissState.dismissDirection == DismissDirection.StartToEnd) Color.Red else Color.Transparent
+                            if (dismissState.dismissDirection == DismissDirection.EndToStart) Color.Red else Color.Transparent
                             ,label = ""
                         )
 
@@ -86,8 +86,8 @@ fun HomeView(viewModel: WishViewModel, navController: NavController) {
                             Icon(Icons.Default.Delete, contentDescription = "Delete Icon", tint = Color.White)
                         }
                     },
-                    directions = setOf(DismissDirection.EndToStart, DismissDirection.StartToEnd),
-                    dismissThresholds = { FractionalThreshold(0.25f) },
+                    directions = setOf(DismissDirection.EndToStart),
+                    dismissThresholds = { FractionalThreshold(1f) },
                     dismissContent = {
                         WishItem(wish = wish) {
                             val id = wish.id
