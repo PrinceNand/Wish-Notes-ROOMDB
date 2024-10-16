@@ -92,6 +92,13 @@ fun AddEditDetailView(id: Long = 0L, viewModel: WishViewModel, navController: Na
                     // TODO AddWish
                     if (id!=0L){
                         // Update Wish
+                        viewModel.updateWish(
+                            Wish(
+                                id = id,
+                                title = viewModel.wishTitleState,
+                                description = viewModel.wishDescriptionState
+                            )
+                        )
                     } else {
                         // Add Wish
                         viewModel.addWish(
